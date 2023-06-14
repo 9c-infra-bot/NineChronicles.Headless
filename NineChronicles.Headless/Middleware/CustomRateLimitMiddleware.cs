@@ -29,8 +29,9 @@ namespace NineChronicles.Headless.Middleware
             _logger.Information($"[IP-RATE-LIMITER] Request {identity.HttpVerb}:{identity.Path} from IP {identity.ClientIp} has been blocked, " +
                                 $"quota {rule.Limit}/{rule.Period} exceeded by {counter.Count - rule.Limit}. Blocked by rule {rule.Endpoint}, " +
                                 $"TraceIdentifier {httpContext.TraceIdentifier}. MonitorMode: {rule.MonitorMode}");
-            if (counter.Count - rule.Limit >= 50)
+            if (counter.Count - rule.Limit >= 30)
             {
+                _logger.Information($"[IP-RATE-LIMITER] Banning IP {identity.ClientIp} for 1 hour.");
                 BannedIpMiddleware.BanIp(identity.ClientIp);
             }
         }

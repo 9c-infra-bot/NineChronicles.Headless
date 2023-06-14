@@ -41,8 +41,9 @@ namespace NineChronicles.Headless.Middleware
             var remoteIp = context.Connection.RemoteIpAddress!.ToString();
             if (_bannedIps.ContainsKey(remoteIp))
             {
-                if ((DateTimeOffset.Now - _bannedIps[remoteIp]).Minutes >= 15)
+                if ((DateTimeOffset.Now - _bannedIps[remoteIp]).Hours >= 1)
                 {
+                    _logger.Information($"[IP-RATE-LIMITER] Unbanning IP {remoteIp} (1-hour ban is expired).");
                     UnbanIp(remoteIp);
                 }
                 else
