@@ -100,7 +100,7 @@ namespace NineChronicles.Headless
                 {
                     services.AddOptions();
                     services.AddMemoryCache();
-                    services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+                    services.Configure<CustomIpRateLimitProperties>(Configuration.GetSection("IpRateLimiting"));
                     services.AddInMemoryRateLimiting();
                     services.AddMvc(options => options.EnableEndpointRouting = false);
                     services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();

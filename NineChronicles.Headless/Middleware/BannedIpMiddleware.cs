@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using NineChronicles.Headless.Properties;
 using Serilog;
 using ILogger = Serilog.ILogger;
 
@@ -12,10 +14,12 @@ namespace NineChronicles.Headless.Middleware
         private static Dictionary<string, DateTimeOffset> _bannedIps = new(); // maintain a list of banned IPs here
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
+        private readonly IOptions<CustomIpRateLimitProperties> _options;
 
-        public BannedIpMiddleware(RequestDelegate next)
+        public BannedIpMiddleware(RequestDelegate next, IOptions<CustomIpRateLimitProperties> options)
         {
             _next = next;
+            _options = options;
             _logger = Log.Logger.ForContext<BannedIpMiddleware>();
         }
 
@@ -41,7 +45,7 @@ namespace NineChronicles.Headless.Middleware
             var remoteIp = context.Connection.RemoteIpAddress!.ToString();
             if (_bannedIps.ContainsKey(remoteIp))
             {
-                if ((DateTimeOffset.Now - _bannedIps[remoteIp]).Hours >= 1)
+                if ((DateTimeOffset.Now - _bannedIps[remoteIp]).Minutes >= _options.Value.IpBanMinute)
                 {
                     _logger.Information($"[IP-RATE-LIMITER] Unbanning IP {remoteIp} (1-hour ban is expired).");
                     UnbanIp(remoteIp);
