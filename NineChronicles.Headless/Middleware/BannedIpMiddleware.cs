@@ -47,15 +47,15 @@ namespace NineChronicles.Headless.Middleware
             {
                 if ((DateTimeOffset.Now - _bannedIps[remoteIp]).Minutes >= _options.Value.IpBanMinute)
                 {
-                    _logger.Information($"[IP-RATE-LIMITER] Unbanning IP {remoteIp} (1-hour ban is expired).");
+                    _logger.Information($"[IP-RATE-LIMITER] Unbanning IP {remoteIp} after {_options.Value.IpBanMinute} minutes.");
                     UnbanIp(remoteIp);
                 }
                 else
                 {
                     _logger.Information($"[IP-RATE-LIMITER] IP {remoteIp} has been banned");
-                    var message = "{ \"message\": \"Your Ip has been banned.\" }";
-                    context.Response.StatusCode = 403;
-                    context.Response.ContentType = "application/json";
+                    var message = _options.Value.IpBanResponse!.Content!;
+                    context.Response.StatusCode = (int) _options.Value.IpBanResponse!.StatusCode!;
+                    context.Response.ContentType = _options.Value.IpBanResponse!.ContentType!;
                     return context.Response.WriteAsync(message);
                 }
             }
