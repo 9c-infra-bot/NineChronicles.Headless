@@ -14,9 +14,9 @@ namespace NineChronicles.Headless.Middleware
         private static Dictionary<string, DateTimeOffset> _bannedIps = new(); // maintain a list of banned IPs here
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
-        private readonly IOptions<CustomIpRateLimitProperties> _options;
+        private readonly IOptions<CustomIpRateLimitOptions> _options;
 
-        public BannedIpMiddleware(RequestDelegate next, IOptions<CustomIpRateLimitProperties> options)
+        public BannedIpMiddleware(RequestDelegate next, IOptions<CustomIpRateLimitOptions> options)
         {
             _next = next;
             _options = options;

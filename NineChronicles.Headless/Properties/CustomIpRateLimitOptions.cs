@@ -2,7 +2,7 @@ using AspNetCoreRateLimit;
 
 namespace NineChronicles.Headless.Properties
 {
-    public class CustomIpRateLimitProperties : IpRateLimitOptions
+    public class CustomIpRateLimitOptions : IpRateLimitOptions
     {
         public int IpBanThresholdCount { get; set; } = 10;
 

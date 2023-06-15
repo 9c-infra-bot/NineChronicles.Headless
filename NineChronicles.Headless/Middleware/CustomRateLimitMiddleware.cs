@@ -13,11 +13,11 @@ namespace NineChronicles.Headless.Middleware
     {
         private readonly ILogger _logger;
         private readonly IRateLimitConfiguration _config;
-        private readonly IOptions<CustomIpRateLimitProperties> _options;
+        private readonly IOptions<CustomIpRateLimitOptions> _options;
 
         public CustomRateLimitMiddleware(RequestDelegate next,
             IProcessingStrategy processingStrategy,
-            IOptions<CustomIpRateLimitProperties> options,
+            IOptions<CustomIpRateLimitOptions> options,
             IIpPolicyStore policyStore,
             IRateLimitConfiguration config)
             : base(next, options?.Value, new CustomIpRateLimitProcessor(options?.Value!, policyStore, processingStrategy), config)

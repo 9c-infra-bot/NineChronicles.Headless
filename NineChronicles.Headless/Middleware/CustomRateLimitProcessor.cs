@@ -6,10 +6,10 @@ namespace NineChronicles.Headless.Middleware
 {
     public class CustomIpRateLimitProcessor : IpRateLimitProcessor
     {
-        private readonly CustomIpRateLimitProperties _options;
+        private readonly CustomIpRateLimitOptions _options;
 
         public CustomIpRateLimitProcessor(
-            CustomIpRateLimitProperties options,
+            CustomIpRateLimitOptions options,
             IIpPolicyStore policyStore,
             IProcessingStrategy processingStrategy) : base(options, policyStore, processingStrategy)
         {
